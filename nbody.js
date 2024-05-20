@@ -744,13 +744,15 @@ function draw() {
 
 // Handle messages from the worker
 worker.onmessage = function (event) {
-  const { bodiesData } = event.data;
-  bodies = bodiesData.map(body => new Body(...Object.values(body)))
-  // Update the bodies in the main thread
-  bodies.forEach((body) => {
-    body.draw();
-  });
-  ui.bodyCount.innerText = bodies.length;
+  const { bodiesData } = event.data.bodies;
+  if (bodiesData) {
+    bodies = bodiesData.map(body => new Body(...Object.values(body)))
+    // Update the bodies in the main thread
+    bodies.forEach((body) => {
+      body.draw();
+    });
+    ui.bodyCount.innerText = bodies.length;
+  }
 };
 
 /**
