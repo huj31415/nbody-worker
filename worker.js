@@ -1,9 +1,54 @@
 
 self.onmessage = function (event) {
   const data = event.data;
-  const { bodies, G, K, drawGravityStrength, drawKStrength, drawSStrength,
+  let { bodiesData, G, K, drawGravityStrength, drawKStrength, drawSStrength,
     gravity, electrostatic, softbody, globalCollide, paused, springEquilPos,
     springConst, dampening } = data;
+
+
+  let bodies = bodiesData.map(body => new Body(...Object.values(body)));
+
+  /** Class containing all the physical properties of a body */
+  class Body {
+    constructor(
+      xPos = 0,
+      yPos = 0,
+      xVel = 0,
+      yVel = 0,
+      r = 5,
+      mass = 0,
+      color = "gray",
+      collide = true,
+      charge = 0,
+      immovable = false,
+      lockAxis = "none"
+    ) {
+      this.xPos = this.xPrev = xPos;
+      this.yPos = this.yPrev = yPos;
+
+      this.xVel = xVel;
+      this.yVel = yVel;
+
+      this.xAccel = 0;
+      this.yAccel = 0;
+
+      this.radius = r ? r : getRadius(mass);
+      this.mass = mass ? mass : (4 / 3) * Math.PI * (r * r * r);
+
+      this.charge = charge;
+
+      this.color = color == "default" ? "gray" : color;
+      this.id = bodyCount++;
+      this.collide = collide;
+
+      this.immovable = immovable;
+      this.lockAxis = lockAxis;
+    }
+    /** Returns the x and y momentum */
+    getMomentum() {
+      return { x: this.xVel * this.mass, y: this.yVel * this.mass };
+    }
+  }
 
   function runSim() {
     // let maxBody = { mass: 0 };
@@ -103,6 +148,65 @@ self.onmessage = function (event) {
               body2.xAccel -= (xAccel * body1.mass + forceX / body2.mass);
               body2.yAccel -= (yAccel * body1.mass + forceY / body2.mass);
             }
+          }
+        }
+      }
+      // Update the position of the body
+      if (!body1.immovable) {
+        body1.xPrev = body1.xPos;
+        body1.yPrev = body1.yPos;
+
+        // implement acceleration
+        body1.xVel += body1.xAccel * timestep;
+        body1.yVel += body1.yAccel * timestep;
+
+        // change pos based on velocity
+        body1.xPos += body1.xVel * timestep;
+        body1.yPos += body1.yVel * timestep;
+
+        // reset acceleration
+        body1.xAccel = 0;
+        body1.yAccel = uniformg;
+
+        // edge collision
+        if (collide) {
+          const xOffset = -collideOffset.x + currentOffset.x;
+          const yOffset = -collideOffset.y + currentOffset.y;
+          if (
+            body1.xPos >= xOffset + canvas.width - body1.radius ||
+            body1.xPos <= xOffset + body1.radius
+          ) {
+            // increment collision
+            collisionCount += 1;
+            ui.collisionCount.innerText = collisionCount;
+
+            // reverse velocity and implement CoR
+            body1.xVel = CoR * -body1.xVel;
+            body1.yVel *= CoR;
+
+            // set position within box, visual glitch but accurate
+            if (body1.xPos >= xOffset + canvas.width - body1.radius) {
+              body1.xPos = 2 * (xOffset + canvas.width - body1.radius) - body1.xPos;
+            } else {
+              body1.xPos = 2 * (xOffset + body1.radius) - body1.xPos;
+            }
+          }
+          if (
+            body1.yPos >= yOffset + canvas.height - body1.radius ||
+            body1.yPos <= yOffset + body1.radius
+          ) {
+            // increment collision
+            collisionCount += 1;
+            ui.collisionCount.innerText = collisionCount;
+
+            // reverse velocity and implement CoR
+            body1.xVel *= CoR;
+            body1.yVel = CoR * -body1.yVel;
+
+            // set position within box, visual glitch but accurate
+            if (body1.yPos >= yOffset + canvas.height - body1.radius)
+              body1.yPos = 2 * (yOffset + canvas.height - body1.radius) - body1.yPos;
+            else body1.yPos = 2 * (yOffset + body1.radius) - body1.yPos;
           }
         }
       }
@@ -259,5 +363,19 @@ self.onmessage = function (event) {
   }
 
   runSim();
-  self.postMessage({ bodies });
+  self.postMessage({ bodies: bodies.map(body => ({
+    id: body.id,
+    xPos: body.xPos,
+    yPos: body.yPos,
+    xVel: body.xVel,
+    yVel: body.yVel,
+    xAccel: body.xAccel,
+    yAccel: body.yAccel,
+    mass: body.mass,
+    radius: body.radius,
+    charge: body.charge,
+    immovable: body.immovable,
+    collide: body.collide
+  })) });
+
 };

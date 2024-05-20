@@ -679,7 +679,20 @@ function draw() {
   }
   // loop through bodies, draw and update// Send data to the worker
   worker.postMessage({
-    bodies,
+    bodiesData: bodies.map(body => ({
+      id: body.id,
+      xPos: body.xPos,
+      yPos: body.yPos,
+      xVel: body.xVel,
+      yVel: body.yVel,
+      xAccel: body.xAccel,
+      yAccel: body.yAccel,
+      mass: body.mass,
+      radius: body.radius,
+      charge: body.charge,
+      immovable: body.immovable,
+      collide: body.collide
+    })),
     G: G,
     K: K,
     drawGravityStrength: drawGravityStrength,
