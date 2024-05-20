@@ -706,7 +706,8 @@ function draw() {
     springEquilPos: springEquilPos,
     springConst: springConst,
     dampening: dampening,
-    collisionCount: collisionCount
+    // collisionCount: collisionCount,
+    bodyCount: bodyCount,
   });
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();
