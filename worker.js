@@ -6,7 +6,6 @@ self.onmessage = function (event) {
     springConst, dampening } = data;
 
 
-  let bodies = bodiesData.map(body => new Body(...Object.values(body)));
 
   /** Class containing all the physical properties of a body */
   class Body {
@@ -49,6 +48,8 @@ self.onmessage = function (event) {
       return { x: this.xVel * this.mass, y: this.yVel * this.mass };
     }
   }
+
+  let bodies = bodiesData.map(body => new Body(...Object.values(body)));
 
   function runSim() {
     // let maxBody = { mass: 0 };
