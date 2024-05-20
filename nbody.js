@@ -708,6 +708,13 @@ function draw() {
     dampening: dampening,
     // collisionCount: collisionCount,
     bodyCount: bodyCount,
+    timestep: timestep,
+    uniformg: uniformg,
+    collideOffset: collideOffset,
+    CoR: CoR,
+    width: canvas.width,
+    height: canvas.width,
+    collide: collide
   });
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();

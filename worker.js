@@ -3,7 +3,7 @@ self.onmessage = function (event) {
   const data = event.data;
   let { bodiesData, G, K, drawGravityStrength, drawKStrength, drawSStrength,
     gravity, electrostatic, softbody, globalCollide, paused, springEquilPos,
-    springConst, dampening, bodyCount } = data;
+    springConst, dampening, bodyCount, timestep, uniformg, collideOffset, CoR, width, height, collide } = data;
 
 
   // calculate radius based on a spherical mass
@@ -16,6 +16,8 @@ self.onmessage = function (event) {
       yPos = 0,
       xVel = 0,
       yVel = 0,
+      xAccel = 0,
+      yAccel = 0,
       r = 5,
       mass = 0,
       color = "gray",
@@ -30,8 +32,8 @@ self.onmessage = function (event) {
       this.xVel = xVel;
       this.yVel = yVel;
 
-      this.xAccel = 0;
-      this.yAccel = 0;
+      this.xAccel = xAccel;
+      this.yAccel = yAccel;
 
       this.radius = r ? r : getRadius(mass);
       this.mass = mass ? mass : (4 / 3) * Math.PI * (r * r * r);
@@ -156,8 +158,8 @@ self.onmessage = function (event) {
       }
       // Update the position of the body
       if (!body1.immovable) {
-        body1.xPrev = body1.xPos;
-        body1.yPrev = body1.yPos;
+        // body1.xPrev = body1.xPos;
+        // body1.yPrev = body1.yPos;
 
         // implement acceleration
         body1.xVel += body1.xAccel * timestep;
@@ -176,26 +178,26 @@ self.onmessage = function (event) {
           const xOffset = -collideOffset.x + currentOffset.x;
           const yOffset = -collideOffset.y + currentOffset.y;
           if (
-            body1.xPos >= xOffset + canvas.width - body1.radius ||
+            body1.xPos >= xOffset + width - body1.radius ||
             body1.xPos <= xOffset + body1.radius
           ) {
             // increment collision
-            collisionCount += 1;
-            ui.collisionCount.innerText = collisionCount;
+            // collisionCount += 1;
+            // ui.collisionCount.innerText = collisionCount;
 
             // reverse velocity and implement CoR
             body1.xVel = CoR * -body1.xVel;
             body1.yVel *= CoR;
 
             // set position within box, visual glitch but accurate
-            if (body1.xPos >= xOffset + canvas.width - body1.radius) {
-              body1.xPos = 2 * (xOffset + canvas.width - body1.radius) - body1.xPos;
+            if (body1.xPos >= xOffset + width - body1.radius) {
+              body1.xPos = 2 * (xOffset + width - body1.radius) - body1.xPos;
             } else {
               body1.xPos = 2 * (xOffset + body1.radius) - body1.xPos;
             }
           }
           if (
-            body1.yPos >= yOffset + canvas.height - body1.radius ||
+            body1.yPos >= yOffset + height - body1.radius ||
             body1.yPos <= yOffset + body1.radius
           ) {
             // increment collision
@@ -207,8 +209,8 @@ self.onmessage = function (event) {
             body1.yVel = CoR * -body1.yVel;
 
             // set position within box, visual glitch but accurate
-            if (body1.yPos >= yOffset + canvas.height - body1.radius)
-              body1.yPos = 2 * (yOffset + canvas.height - body1.radius) - body1.yPos;
+            if (body1.yPos >= yOffset + height - body1.radius)
+              body1.yPos = 2 * (yOffset + height - body1.radius) - body1.yPos;
             else body1.yPos = 2 * (yOffset + body1.radius) - body1.yPos;
           }
         }
@@ -262,7 +264,7 @@ self.onmessage = function (event) {
     larger.charge += smaller.charge;
 
     // Maintain tracking
-    if (trackBody === smaller) trackBody = larger;
+    // if (trackBody === smaller) trackBody = larger;
     // Remove the smaller object
     remove(smaller);
   }
