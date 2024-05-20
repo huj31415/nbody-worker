@@ -744,7 +744,8 @@ function draw() {
 
 // Handle messages from the worker
 worker.onmessage = function (event) {
-  const { bodies } = event.data;
+  const { bodiesData } = event.data;
+  bodies = bodiesData.map(body => new Body(...Object.values(body)))
   // Update the bodies in the main thread
   bodies.forEach((body) => {
     body.draw();
