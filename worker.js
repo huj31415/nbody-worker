@@ -16,34 +16,35 @@ self.onmessage = function (event) {
       yPos = 0,
       xVel = 0,
       yVel = 0,
-      xAccel = 0,
-      yAccel = 0,
       r = 5,
       mass = 0,
       color = "gray",
       collide = true,
       charge = 0,
       immovable = false,
-      lockAxis = "none"
+      lockAxis = "none",
+      xAccel = 0,
+      yAccel = 0,
+      id = bodyCount++
     ) {
       this.xPos = this.xPrev = xPos;
       this.yPos = this.yPrev = yPos;
-
+  
       this.xVel = xVel;
       this.yVel = yVel;
-
-      this.xAccel = xAccel;
-      this.yAccel = yAccel;
-
+  
+      this.xAccel = yAccel;
+      this.yAccel = xAccel;
+  
       this.radius = r ? r : getRadius(mass);
       this.mass = mass ? mass : (4 / 3) * Math.PI * (r * r * r);
-
+  
       this.charge = charge;
-
+  
       this.color = color == "default" ? "gray" : color;
-      this.id = bodyCount++;
+      this.id = id;
       this.collide = collide;
-
+  
       this.immovable = immovable;
       this.lockAxis = lockAxis;
     }
@@ -370,18 +371,20 @@ self.onmessage = function (event) {
   runSim();
   self.postMessage({
     bodies: bodies.map(body => ({
-      id: body.id,
       xPos: body.xPos,
       yPos: body.yPos,
       xVel: body.xVel,
       yVel: body.yVel,
-      xAccel: body.xAccel,
-      yAccel: body.yAccel,
-      mass: body.mass,
       radius: body.radius,
+      mass: body.mass,
+      color: body.color,
+      collide: body.collide,
       charge: body.charge,
       immovable: body.immovable,
-      collide: body.collide
+      lockAxis: body.lockAxis,
+      xAccel: body.xAccel,
+      yAccel: body.yAccel,
+      id: body.id,
     }))
   });
 

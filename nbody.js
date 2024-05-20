@@ -251,7 +251,10 @@ class Body {
     collide = true,
     charge = 0,
     immovable = false,
-    lockAxis = "none"
+    lockAxis = "none",
+    xAccel = 0,
+    yAccel = 0,
+    id = bodyCount++
   ) {
     this.xPos = this.xPrev = xPos;
     this.yPos = this.yPrev = yPos;
@@ -259,8 +262,8 @@ class Body {
     this.xVel = xVel;
     this.yVel = yVel;
 
-    this.xAccel = 0;
-    this.yAccel = 0;
+    this.xAccel = yAccel;
+    this.yAccel = xAccel;
 
     this.radius = r ? r : getRadius(mass);
     this.mass = mass ? mass : (4 / 3) * Math.PI * (r * r * r);
@@ -268,7 +271,7 @@ class Body {
     this.charge = charge;
 
     this.color = color == "default" ? "gray" : color;
-    this.id = bodyCount++;
+    this.id = id;
     this.collide = collide;
 
     this.immovable = immovable;
@@ -680,18 +683,20 @@ function draw() {
   // loop through bodies, draw and update// Send data to the worker
   worker.postMessage({
     bodiesData: bodies.map(body => ({
-      id: body.id,
       xPos: body.xPos,
       yPos: body.yPos,
       xVel: body.xVel,
       yVel: body.yVel,
-      xAccel: body.xAccel,
-      yAccel: body.yAccel,
-      mass: body.mass,
       radius: body.radius,
+      mass: body.mass,
+      color: body.color,
+      collide: body.collide,
       charge: body.charge,
       immovable: body.immovable,
-      collide: body.collide
+      lockAxis: body.lockAxis,
+      xAccel: body.xAccel,
+      yAccel: body.yAccel,
+      id: body.id,
     })),
     G: G,
     K: K,
