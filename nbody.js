@@ -682,7 +682,6 @@ function draw() {
     bodies,
     G: G,
     K: K,
-    drawField: drawField,
     drawGravityStrength: drawGravityStrength,
     drawKStrength: drawKStrength,
     drawSStrength: drawSStrength,
@@ -694,10 +693,7 @@ function draw() {
     springEquilPos: springEquilPos,
     springConst: springConst,
     dampening: dampening,
-    drawGThreshold: drawGThreshold,
-    drawKThreshold: drawKThreshold,
-    trace: trace,
-    totalzoom: totalzoom
+    collisionCount: collisionCount
   });
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();
@@ -732,6 +728,7 @@ worker.onmessage = function (event) {
   bodies.forEach((body) => {
     body.draw();
   });
+  ui.activeBodies.innerText = bodies.length;
 };
 
 /**

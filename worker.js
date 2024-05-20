@@ -1,15 +1,15 @@
 
 self.onmessage = function (event) {
   const data = event.data;
-  const { bodies, G, K, drawField, drawGravityStrength, drawKStrength, drawSStrength,
+  const { bodies, G, K, drawGravityStrength, drawKStrength, drawSStrength,
     gravity, electrostatic, softbody, globalCollide, paused, springEquilPos,
-    springConst, dampening, drawGThreshold, drawKThreshold, trace, totalzoom } = data;
+    springConst, dampening } = data;
 
   function runSim() {
-    let maxBody = { mass: 0 };
+    // let maxBody = { mass: 0 };
     bodies.forEach((body, index) => {
       const body1 = body;
-      if (drawField && body1.mass > maxBody.mass) maxBody = body1;
+      // if (drawField && body1.mass > maxBody.mass) maxBody = body1;
       if (bodies.length > 1 &&
         (((gravity && G || softbody || electrostatic && K || globalCollide) && !paused) ||
           (drawGravityStrength || drawKStrength || drawSStrength))) {
@@ -108,17 +108,28 @@ self.onmessage = function (event) {
       }
     });
   }
-
   /**
- * Calculate perfectly inelastic collisions, merge smaller body into larger
- * @param {Body} body1 the first body
- * @param {Body} body2 the second body
- */
+   * Removes bodies during collision
+   * @param {Array} arr input array
+   * @param {Number} id id of the value to remove
+   * @returns the input array without the removed body
+   */
+  function remove(body, i = 0) {
+    const index = body ? bodies.indexOf(body) : i; //bodies.findIndex((body) => body.id === id);
+    if (index != -1) {
+      bodies.splice(index, 1);
+    }
+  }
+  /**
+   * Calculate perfectly inelastic collisions, merge smaller body into larger
+   * @param {Body} body1 the first body
+   * @param {Body} body2 the second body
+   */
   function merge(body1, body2) {
     // collisionCount += 1;
     // ui.collisionCount.innerText = collisionCount;
-    activeBodies = bodies.length - 1;
-    ui.bodyCount.innerText = activeBodies;
+    // activeBodies = bodies.length - 1;
+    // ui.bodyCount.innerText = activeBodies;
 
     // merge masses and calculate corresponding radius and velocity based on momentum
     // color of new body is inherited from the larger
@@ -156,8 +167,8 @@ self.onmessage = function (event) {
    */
   function collision(body1, body2) {
     // increment collision counter
-    collisionCount += 1;
-    ui.collisionCount.innerText = collisionCount;
+    // collisionCount += 1;
+    // ui.collisionCount.innerText = collisionCount;
     if (inelastic) merge(body1, body2); // combine the bodies into one
     else { // calculate non-perfectly inelastic collisions
       // larger and smaller bodies
