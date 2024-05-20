@@ -728,7 +728,7 @@ worker.onmessage = function (event) {
   bodies.forEach((body) => {
     body.draw();
   });
-  ui.activeBodies.innerText = bodies.length;
+  ui.bodyCount.innerText = bodies.length;
 };
 
 /**
