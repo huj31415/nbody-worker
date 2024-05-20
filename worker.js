@@ -3,7 +3,7 @@ self.onmessage = function (event) {
   const data = event.data;
   const { bodies, G, K, drawField, drawGravityStrength, drawKStrength, drawSStrength,
     gravity, electrostatic, softbody, globalCollide, paused, springEquilPos,
-    springConst, dampening, drawGThreshold, drawKThreshold, trace, totalzoom, ctx } = data;
+    springConst, dampening, drawGThreshold, drawKThreshold, trace, totalzoom } = data;
 
   function runSim() {
     let maxBody = { mass: 0 };
@@ -34,40 +34,40 @@ self.onmessage = function (event) {
               xAccel = (g * xDist) / dist;
               yAccel = (g * yDist) / dist;
 
-              if (drawGravityStrength) {
-                const strength = Math.abs(1 - 10 / (g * body1.mass * body2.mass + 10));
-                const drawThreshold = drawGThreshold ? (trace ? 1e-4 : 1e-2) : 0;
-                if (strength >= drawThreshold) {
-                  ctx.beginPath();
-                  ctx.strokeStyle =
-                    "rgba(" + (255 - 255 * strength) + ", " + (255 * strength) + ",0 ," + strength + ")";
-                  ctx.lineWidth = 1 / totalzoom;
-                  ctx.moveTo(body2.xPos, body2.yPos);
-                  ctx.lineTo(body1.xPos, body1.yPos);
-                  ctx.closePath();
-                  ctx.stroke();
-                }
-              }
+              // if (drawGravityStrength) {
+              //   const strength = Math.abs(1 - 10 / (g * body1.mass * body2.mass + 10));
+              //   const drawThreshold = drawGThreshold ? (trace ? 1e-4 : 1e-2) : 0;
+              //   if (strength >= drawThreshold) {
+              //     ctx.beginPath();
+              //     ctx.strokeStyle =
+              //       "rgba(" + (255 - 255 * strength) + ", " + (255 * strength) + ",0 ," + strength + ")";
+              //     ctx.lineWidth = 1 / totalzoom;
+              //     ctx.moveTo(body2.xPos, body2.yPos);
+              //     ctx.lineTo(body1.xPos, body1.yPos);
+              //     ctx.closePath();
+              //     ctx.stroke();
+              //   }
+              // }
             }
 
             if ((K != 0 && electrostatic || softbody) && !(body1.immovable && body2.immovable)) {
               if (electrostatic) {
                 kForce += electrostatic ? (K * (-body1.charge) * body2.charge) / sqr : 0;
 
-                if (drawKStrength && kForce != 0) {
-                  const strength = Math.sign(kForce) * (1 - 10 / (Math.abs(kForce) + 10));
-                  const drawThreshold = drawKThreshold ? (trace ? 1e-4 : 1e-2) : 0;
-                  if (Math.abs(strength) >= drawThreshold) {
-                    ctx.beginPath();
-                    ctx.strokeStyle =
-                      "rgba(" + (strength > 0 ? 0 : 255) + ", " + (strength > 0 ? 255 : 0) + ",0 ," + Math.abs(strength) + ")";
-                    ctx.lineWidth = 1 / totalzoom;
-                    ctx.moveTo(body2.xPos, body2.yPos);
-                    ctx.lineTo(body1.xPos, body1.yPos);
-                    ctx.closePath();
-                    ctx.stroke();
-                  }
-                }
+                // if (drawKStrength && kForce != 0) {
+                //   const strength = Math.sign(kForce) * (1 - 10 / (Math.abs(kForce) + 10));
+                //   const drawThreshold = drawKThreshold ? (trace ? 1e-4 : 1e-2) : 0;
+                //   if (Math.abs(strength) >= drawThreshold) {
+                //     ctx.beginPath();
+                //     ctx.strokeStyle =
+                //       "rgba(" + (strength > 0 ? 0 : 255) + ", " + (strength > 0 ? 255 : 0) + ",0 ," + Math.abs(strength) + ")";
+                //     ctx.lineWidth = 1 / totalzoom;
+                //     ctx.moveTo(body2.xPos, body2.yPos);
+                //     ctx.lineTo(body1.xPos, body1.yPos);
+                //     ctx.closePath();
+                //     ctx.stroke();
+                //   }
+                // }
               }
               if (softbody && dist < springEquilPos * 1.2) {
                 let springDist = dist - springEquilPos;
@@ -77,18 +77,18 @@ self.onmessage = function (event) {
                 body2.xVel *= dampening;
                 body2.yVel *= dampening;
 
-                if (drawSStrength) {
-                  const strength = Math.sign(sForce) * (1 - 10 / (Math.abs(sForce) + 10));
-                  const scaledStrength = 127.5 * strength;
-                  ctx.beginPath();
-                  ctx.strokeStyle =
-                    "rgba(" + (127.5 - scaledStrength) + ", " + (127.5 + scaledStrength) + ",0 ," + (127.5 + Math.abs(scaledStrength)) + ")";
-                  ctx.lineWidth = 1 / totalzoom;
-                  ctx.moveTo(body2.xPos, body2.yPos);
-                  ctx.lineTo(body1.xPos, body1.yPos);
-                  ctx.closePath();
-                  ctx.stroke();
-                }
+                // if (drawSStrength) {
+                //   const strength = Math.sign(sForce) * (1 - 10 / (Math.abs(sForce) + 10));
+                //   const scaledStrength = 127.5 * strength;
+                //   ctx.beginPath();
+                //   ctx.strokeStyle =
+                //     "rgba(" + (127.5 - scaledStrength) + ", " + (127.5 + scaledStrength) + ",0 ," + (127.5 + Math.abs(scaledStrength)) + ")";
+                //   ctx.lineWidth = 1 / totalzoom;
+                //   ctx.moveTo(body2.xPos, body2.yPos);
+                //   ctx.lineTo(body1.xPos, body1.yPos);
+                //   ctx.closePath();
+                //   ctx.stroke();
+                // }
               }
 
               let force = kForce + sForce;

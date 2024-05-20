@@ -697,8 +697,7 @@ function draw() {
     drawGThreshold: drawGThreshold,
     drawKThreshold: drawKThreshold,
     trace: trace,
-    totalzoom: totalzoom,
-    ctx: ctx
+    totalzoom: totalzoom
   });
   // Handle messages from the worker
   worker.onmessage = function (event) {
