@@ -370,7 +370,7 @@ self.onmessage = function (event) {
 
   runSim();
   self.postMessage({
-    bodies: bodies.map(body => ({
+    bodiesData: bodies.map(body => ({
       xPos: body.xPos,
       yPos: body.yPos,
       xVel: body.xVel,
