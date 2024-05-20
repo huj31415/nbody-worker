@@ -699,12 +699,6 @@ function draw() {
     trace: trace,
     totalzoom: totalzoom
   });
-  // Handle messages from the worker
-  worker.onmessage = function (event) {
-    const { bodies } = event.data;
-    // Update the bodies in the main thread
-    updateBodies(bodies);
-  };
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();
 
@@ -730,6 +724,15 @@ function draw() {
   // call the loop again
   frameDelayMs ? setTimeout(draw, frameDelayMs) : requestAnimationFrame(draw);
 }
+
+// Handle messages from the worker
+worker.onmessage = function (event) {
+  const { bodies } = event.data;
+  // Update the bodies in the main thread
+  bodies.forEach((body) => {
+    body.draw();
+  });
+};
 
 /**
  * Update graphs to display framerate and number of bodies
