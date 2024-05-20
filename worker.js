@@ -6,6 +6,8 @@ self.onmessage = function (event) {
     springConst, dampening } = data;
 
 
+  // calculate radius based on a spherical mass
+  const getRadius = (mass) => Math.abs(Math.cbrt((mass * (3 / 4)) / Math.PI));
 
   /** Class containing all the physical properties of a body */
   class Body {
@@ -364,19 +366,21 @@ self.onmessage = function (event) {
   }
 
   runSim();
-  self.postMessage({ bodies: bodies.map(body => ({
-    id: body.id,
-    xPos: body.xPos,
-    yPos: body.yPos,
-    xVel: body.xVel,
-    yVel: body.yVel,
-    xAccel: body.xAccel,
-    yAccel: body.yAccel,
-    mass: body.mass,
-    radius: body.radius,
-    charge: body.charge,
-    immovable: body.immovable,
-    collide: body.collide
-  })) });
+  self.postMessage({
+    bodies: bodies.map(body => ({
+      id: body.id,
+      xPos: body.xPos,
+      yPos: body.yPos,
+      xVel: body.xVel,
+      yVel: body.yVel,
+      xAccel: body.xAccel,
+      yAccel: body.yAccel,
+      mass: body.mass,
+      radius: body.radius,
+      charge: body.charge,
+      immovable: body.immovable,
+      collide: body.collide
+    }))
+  });
 
 };
