@@ -753,20 +753,20 @@ worker.onmessage = function (event) {
   const { bodiesData } = event.data;
   if (bodiesData) {
     bodies = bodies.map(body => new Body(
-      body.id,
       body.xPos,
       body.yPos,
       body.xVel,
       body.yVel,
-      body.xAccel,
-      body.yAccel,
-      body.mass,
       body.radius,
+      body.mass,
+      body.color,
+      body.collide,
       body.charge,
       body.immovable,
-      body.collide,
       body.lockAxis,
-      body.color
+      body.xAccel,
+      body.yAccel,
+      body.id
     ));
     // Update the bodies in the main thread
     bodies.forEach((body) => {
