@@ -3,7 +3,7 @@ self.onmessage = function (event) {
   const data = event.data;
   let { bodiesData, G, K, drawGravityStrength, drawKStrength, drawSStrength,
     gravity, electrostatic, softbody, globalCollide, paused, springEquilPos,
-    springConst, dampening, bodyCount, timestep, uniformg, collideOffset, CoR, width, height, collide } = data;
+    springConst, dampening, bodyCount, timestep, uniformg, collideOffset, CoR, width, height, collide, inelastic } = data;
 
 
   // calculate radius based on a spherical mass

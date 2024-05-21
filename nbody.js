@@ -719,7 +719,8 @@ function draw() {
     CoR: CoR,
     width: canvas.width,
     height: canvas.width,
-    collide: collide
+    collide: collide,
+    inelastic: inelastic
   });
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();
