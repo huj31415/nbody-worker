@@ -396,64 +396,64 @@ class Body {
     }
 
     // Update the position of the body
-    if (!this.immovable) {
-      this.xPrev = this.xPos;
-      this.yPrev = this.yPos;
+    // if (!this.immovable) {
+    //   this.xPrev = this.xPos;
+    //   this.yPrev = this.yPos;
 
-      // implement acceleration
-      this.xVel += this.xAccel * timestep;
-      this.yVel += this.yAccel * timestep;
+    //   // implement acceleration
+    //   this.xVel += this.xAccel * timestep;
+    //   this.yVel += this.yAccel * timestep;
 
-      // change pos based on velocity
-      this.xPos += this.xVel * timestep;
-      this.yPos += this.yVel * timestep;
+    //   // change pos based on velocity
+    //   this.xPos += this.xVel * timestep;
+    //   this.yPos += this.yVel * timestep;
 
-      // reset acceleration
-      this.xAccel = 0;
-      this.yAccel = uniformg;
+    //   // reset acceleration
+    //   this.xAccel = 0;
+    //   this.yAccel = uniformg;
 
-      // edge collision
-      if (collide) {
-        const xOffset = -collideOffset.x + currentOffset.x;
-        const yOffset = -collideOffset.y + currentOffset.y;
-        if (
-          this.xPos >= xOffset + canvas.width - this.radius ||
-          this.xPos <= xOffset + this.radius
-        ) {
-          // increment collision
-          collisionCount += 1;
-          ui.collisionCount.innerText = collisionCount;
+    //   // edge collision
+    //   if (collide) {
+    //     const xOffset = -collideOffset.x + currentOffset.x;
+    //     const yOffset = -collideOffset.y + currentOffset.y;
+    //     if (
+    //       this.xPos >= xOffset + canvas.width - this.radius ||
+    //       this.xPos <= xOffset + this.radius
+    //     ) {
+    //       // increment collision
+    //       collisionCount += 1;
+    //       ui.collisionCount.innerText = collisionCount;
 
-          // reverse velocity and implement CoR
-          this.xVel = CoR * -this.xVel;
-          this.yVel *= CoR;
+    //       // reverse velocity and implement CoR
+    //       this.xVel = CoR * -this.xVel;
+    //       this.yVel *= CoR;
 
-          // set position within box, visual glitch but accurate
-          if (this.xPos >= xOffset + canvas.width - this.radius) {
-            this.xPos = 2 * (xOffset + canvas.width - this.radius) - this.xPos;
-          } else {
-            this.xPos = 2 * (xOffset + this.radius) - this.xPos;
-          }
-        }
-        if (
-          this.yPos >= yOffset + canvas.height - this.radius ||
-          this.yPos <= yOffset + this.radius
-        ) {
-          // increment collision
-          collisionCount += 1;
-          ui.collisionCount.innerText = collisionCount;
+    //       // set position within box, visual glitch but accurate
+    //       if (this.xPos >= xOffset + canvas.width - this.radius) {
+    //         this.xPos = 2 * (xOffset + canvas.width - this.radius) - this.xPos;
+    //       } else {
+    //         this.xPos = 2 * (xOffset + this.radius) - this.xPos;
+    //       }
+    //     }
+    //     if (
+    //       this.yPos >= yOffset + canvas.height - this.radius ||
+    //       this.yPos <= yOffset + this.radius
+    //     ) {
+    //       // increment collision
+    //       collisionCount += 1;
+    //       ui.collisionCount.innerText = collisionCount;
 
-          // reverse velocity and implement CoR
-          this.xVel *= CoR;
-          this.yVel = CoR * -this.yVel;
+    //       // reverse velocity and implement CoR
+    //       this.xVel *= CoR;
+    //       this.yVel = CoR * -this.yVel;
 
-          // set position within box, visual glitch but accurate
-          if (this.yPos >= yOffset + canvas.height - this.radius)
-            this.yPos = 2 * (yOffset + canvas.height - this.radius) - this.yPos;
-          else this.yPos = 2 * (yOffset + this.radius) - this.yPos;
-        }
-      }
-    }
+    //       // set position within box, visual glitch but accurate
+    //       if (this.yPos >= yOffset + canvas.height - this.radius)
+    //         this.yPos = 2 * (yOffset + canvas.height - this.radius) - this.yPos;
+    //       else this.yPos = 2 * (yOffset + this.radius) - this.yPos;
+    //     }
+    //   }
+    // }
 
   }
 }
