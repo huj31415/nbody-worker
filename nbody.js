@@ -722,6 +722,10 @@ function draw() {
     collide: collide,
     inelastic: inelastic
   });
+  
+  bodies.forEach((body) => {
+    body.draw();
+  });
   if (continueTrace) trace = true;
   if (drawMouseVector) drawPointField();
 
@@ -769,9 +773,6 @@ worker.onmessage = function (event) {
       body.id
     ));
     // Update the bodies in the main thread
-    bodies.forEach((body) => {
-      body.draw();
-    });
     ui.bodyCount.innerText = bodies.length;
   }
 };
