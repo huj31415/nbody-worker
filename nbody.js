@@ -85,14 +85,14 @@ const canvas = document.getElementById("canvas", { alpha: false });
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-ui.viewport.innerText = canvas.width + " x " + canvas.height;
+ui.viewport.innerHTML = canvas.width + " x " + canvas.height;
 let center = { x: canvas.width / 2, y: canvas.height / 2 };
 
 // make the canvas size responsive
 window.onresize = () => {
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth;
-  ui.viewport.innerText = canvas.width + " x " + canvas.height;
+  ui.viewport.innerHTML = canvas.width + " x " + canvas.height;
   center = { x: canvas.width / 2, y: canvas.height / 2 };
   viewport.x = canvas.width / totalzoom;
   viewport.y = canvas.height / totalzoom;
@@ -262,8 +262,8 @@ class Body {
     this.xVel = xVel;
     this.yVel = yVel;
 
-    this.xAccel = yAccel;
-    this.yAccel = xAccel;
+    this.xAccel = xAccel;
+    this.yAccel = yAccel;
 
     this.radius = r ? r : getRadius(mass);
     this.mass = mass ? mass : (4 / 3) * Math.PI * (r * r * r);
@@ -394,67 +394,6 @@ class Body {
         }
       }
     }
-
-    // Update the position of the body
-    // if (!this.immovable) {
-    //   this.xPrev = this.xPos;
-    //   this.yPrev = this.yPos;
-
-    //   // implement acceleration
-    //   this.xVel += this.xAccel * timestep;
-    //   this.yVel += this.yAccel * timestep;
-
-    //   // change pos based on velocity
-    //   this.xPos += this.xVel * timestep;
-    //   this.yPos += this.yVel * timestep;
-
-    //   // reset acceleration
-    //   this.xAccel = 0;
-    //   this.yAccel = uniformg;
-
-    //   // edge collision
-    //   if (collide) {
-    //     const xOffset = -collideOffset.x + currentOffset.x;
-    //     const yOffset = -collideOffset.y + currentOffset.y;
-    //     if (
-    //       this.xPos >= xOffset + canvas.width - this.radius ||
-    //       this.xPos <= xOffset + this.radius
-    //     ) {
-    //       // increment collision
-    //       collisionCount += 1;
-    //       ui.collisionCount.innerText = collisionCount;
-
-    //       // reverse velocity and implement CoR
-    //       this.xVel = CoR * -this.xVel;
-    //       this.yVel *= CoR;
-
-    //       // set position within box, visual glitch but accurate
-    //       if (this.xPos >= xOffset + canvas.width - this.radius) {
-    //         this.xPos = 2 * (xOffset + canvas.width - this.radius) - this.xPos;
-    //       } else {
-    //         this.xPos = 2 * (xOffset + this.radius) - this.xPos;
-    //       }
-    //     }
-    //     if (
-    //       this.yPos >= yOffset + canvas.height - this.radius ||
-    //       this.yPos <= yOffset + this.radius
-    //     ) {
-    //       // increment collision
-    //       collisionCount += 1;
-    //       ui.collisionCount.innerText = collisionCount;
-
-    //       // reverse velocity and implement CoR
-    //       this.xVel *= CoR;
-    //       this.yVel = CoR * -this.yVel;
-
-    //       // set position within box, visual glitch but accurate
-    //       if (this.yPos >= yOffset + canvas.height - this.radius)
-    //         this.yPos = 2 * (yOffset + canvas.height - this.radius) - this.yPos;
-    //       else this.yPos = 2 * (yOffset + this.radius) - this.yPos;
-    //     }
-    //   }
-    // }
-
   }
 }
 
@@ -595,7 +534,7 @@ function pan(offset = { x: 0, y: 0 }, clrTrails = true) {
     body.yPos += offset.y;
   });
 
-  ui.offset.innerText = Math.floor(currentOffset.x) + " Y=" + Math.floor(currentOffset.y);
+  ui.offset.innerHTML = Math.floor(currentOffset.x) + " Y=" + Math.floor(currentOffset.y);
 }
 
 /**
@@ -716,13 +655,14 @@ function draw() {
     timestep: timestep,
     uniformg: uniformg,
     collideOffset: collideOffset,
+    currentOffset: currentOffset,
     CoR: CoR,
     width: canvas.width,
     height: canvas.width,
     collide: collide,
     inelastic: inelastic
   });
-  
+
   bodies.forEach((body) => {
     body.draw();
   });
@@ -756,24 +696,8 @@ function draw() {
 worker.onmessage = function (event) {
   const { bodiesData } = event.data;
   if (bodiesData) {
-    bodies = bodies.map(body => new Body(
-      body.xPos,
-      body.yPos,
-      body.xVel,
-      body.yVel,
-      body.radius,
-      body.mass,
-      body.color,
-      body.collide,
-      body.charge,
-      body.immovable,
-      body.lockAxis,
-      body.xAccel,
-      body.yAccel,
-      body.id
-    ));
-    // Update the bodies in the main thread
-    ui.bodyCount.innerText = bodies.length;
+    bodies = bodiesData.map(body => new Body(...Object.values(body)));
+    ui.bodyCount.innerHTML = bodies.length;
   }
 };
 
@@ -791,7 +715,7 @@ function updateGraphs(interval) {
   if (elapsedTime >= interval) {
     // Update 10 times per second
     const fps = frameCount / (elapsedTime / 1000);
-    ui.fps.innerText = ~~(fps * 100) / 100;
+    ui.fps.innerHTML = ~~(fps * 100) / 100;
 
     // draw fps graph
     xCoord += 2;

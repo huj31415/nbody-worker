@@ -17,7 +17,7 @@ function load() {
     case "0": // 500 body chaos
       ui.drawVector.checked = drawVector = false;
       ui.drawGravity.checked = drawGravity = false;
-      ui.timestep.value = ui.tOut.innerText = 0.5;
+      ui.timestep.value = ui.tOut.innerHTML = 0.5;
       ui.numBodies.value = numBodies = 500;
       ui.maxMass.value = maxMass = 100;
       ui.minMass.value = minMass = 50;
@@ -50,7 +50,7 @@ function load() {
       ui.G.value = 1;
       ui.drawVector.checked = drawVector = false;
       ui.drawGravity.checked = drawGravity = false;
-      ui.timestep.value = ui.tOut.innerText = timestep = 0.1;
+      ui.timestep.value = ui.tOut.innerHTML = timestep = 0.1;
       ui.drawGravityStrength.checked = drawGravityStrength = false;
       ui.gravity.checked = true;
       const g1num = randInt(500, 1000);
@@ -86,7 +86,7 @@ function load() {
       ui.G.value = 1;
       ui.drawVector.checked = drawVector = false;
       ui.drawGravity.checked = drawGravity = false;
-      ui.timestep.value = ui.tOut.innerText = timestep = 0.25;
+      ui.timestep.value = ui.tOut.innerHTML = timestep = 0.25;
       ui.drawGravityStrength.checked = drawGravityStrength = false;
       ui.gravity.checked = true;
       generateGalaxy(
@@ -107,7 +107,7 @@ function load() {
       ui.G.value = 1;
       ui.drawVector.checked = drawVector = false;
       ui.drawGravity.checked = drawGravity = false;
-      ui.timestep.value = ui.tOut.innerText = timestep = 0.25;
+      ui.timestep.value = ui.tOut.innerHTML = timestep = 0.25;
       ui.drawGravityStrength.checked = drawGravityStrength = false;
       ui.gravity.checked = true;
       generateSolarSystem({ x: center.x, y: center.y }, { x: 0, y: 0 });
@@ -129,7 +129,7 @@ function load() {
       break;
   }
   activeBodies = bodies.length;
-  ui.bodyCount.innerText = activeBodies;
+  ui.bodyCount.innerHTML = activeBodies;
 }
 
 
@@ -260,7 +260,7 @@ function initSquareGrid(spacing = 25, mass = 100, r = 4) { // r = 12 for non-sof
   ui.gravity.checked = gravity = false;
   ui.inelastic.checked = inelastic = false;
   ui.softbody.checked = softbody = true;
-  ui.CoR.value = ui.CoROut.innerText = CoR = 0;
+  ui.CoR.value = ui.CoROut.innerHTML = CoR = 0;
   ui.springConst.value = springConst = 100;
   ui.springEquilPos.value = springEquilPos = 25;
 
@@ -275,7 +275,7 @@ function initSquareGrid(spacing = 25, mass = 100, r = 4) { // r = 12 for non-sof
 function initHexGrid(spacing = 25, mass = 100, r = 4) { // r = 12 for non-softbody
   ui.gravity.checked = gravity = false;
   ui.inelastic.checked = inelastic = false;
-  ui.CoR.value = ui.CoROut.innerText = CoR = 0;
+  ui.CoR.value = ui.CoROut.innerHTML = CoR = 0;
   ui.softbody.checked = softbody = true;
   ui.springConst.value = springConst = 100;
   ui.springEquilPos.value = springEquilPos = 25;

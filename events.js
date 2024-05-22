@@ -46,7 +46,7 @@ function zoom(zoomfactor = 0) {
     (-(zoomfactor - 1) * canvas.width) / 2,
     (-(zoomfactor - 1) * canvas.height) / 2
   );
-  ui.viewport.innerText = ~~(viewport.x) + " x " + ~~(viewport.y);
+  ui.viewport.innerHTML = ~~(viewport.x) + " x " + ~~(viewport.y);
   ctx.fillStyle = "rgba(0, 0, 0, 1)";
   ctx.fillRect(
     center.x - viewport.x / 2,
@@ -54,7 +54,7 @@ function zoom(zoomfactor = 0) {
     viewport.x,
     viewport.y
   );
-  ui.zoom.innerText = ~~(totalzoom * 10000) / 100;
+  ui.zoom.innerHTML = ~~(totalzoom * 10000) / 100;
 }
 
 /** update varables based on ui input values */
@@ -96,14 +96,14 @@ function updateSettings() {
           initParams();
           initRandBodies(numBodies, minMass, maxMass, minCharge, maxCharge, initVel, true);
           activeBodies = bodies.length;
-          ui.bodyCount.innerText = activeBodies;
+          ui.bodyCount.innerHTML = activeBodies;
           break;
         case ui.loadBtn: // load preset
           load();
           break;
         case ui.add:
           activeBodies += 1;
-          ui.bodyCount.innerText = activeBodies;
+          ui.bodyCount.innerHTML = activeBodies;
           initParams();
           initRandBodies(1, minMass, maxMass, minCharge, maxCharge, initVel);
           break;
@@ -117,8 +117,8 @@ function updateSettings() {
             viewport.y
           );
           activeBodies = bodies.length;
-          ui.bodyCount.innerText = activeBodies;
-          collisionCount = ui.collisionCount.innerText = 0;
+          ui.bodyCount.innerHTML = activeBodies;
+          collisionCount = ui.collisionCount.innerHTML = 0;
           break;
         case ui.clrOffscreen:
           let offset = {
@@ -131,7 +131,7 @@ function updateSettings() {
             }
           });
           activeBodies = bodies.length;
-          ui.bodyCount.innerText = activeBodies;
+          ui.bodyCount.innerHTML = activeBodies;
           break;
         case ui.toggle:
           paused = !paused;
@@ -151,7 +151,7 @@ function updateSettings() {
 
     // toggle visibility of the settings panel
     ui.collapse.onclick = () => {
-      ui.collapse.innerText = ui.collapse.innerText === ">" ? "<" : ">";
+      ui.collapse.innerHTML = ui.collapse.innerHTML === ">" ? "<" : ">";
       if (ui.panel.classList.contains("hidden")) {
         ui.panel.classList.remove("hidden");
       } else {
@@ -168,15 +168,15 @@ function updateSettings() {
       }
     });
     ui.timestep.addEventListener("input", (event) => {
-      ui.tOut.innerText = parseFloat(event.target.value);
+      ui.tOut.innerHTML = parseFloat(event.target.value);
       timestep = parseFloat(event.target.value);
     });
     ui.CoR.addEventListener("input", (event) => {
-      ui.CoROut.innerText = parseFloat(event.target.value);
+      ui.CoROut.innerHTML = parseFloat(event.target.value);
       CoR = parseFloat(event.target.value);
     });
     ui.fadeStrength.addEventListener("input", (event) => {
-      ui.fadeOutput.innerText = parseFloat(event.target.value);
+      ui.fadeOutput.innerHTML = parseFloat(event.target.value);
       fadeStrength = parseFloat(event.target.value);
     });
 
@@ -201,7 +201,7 @@ function updateSettings() {
     });
 
     ui.dampening.addEventListener("input", (event) => {
-      ui.dampOut.innerText = parseFloat(event.target.value);
+      ui.dampOut.innerHTML = parseFloat(event.target.value);
       dampening = 1 - parseFloat(event.target.value);
     });
 
@@ -253,14 +253,14 @@ function updateSettings() {
         );
 
         activeBodies += 1;
-        ui.bodyCount.innerText = activeBodies;
+        ui.bodyCount.innerHTML = activeBodies;
       } else if (event.altKey) {
         event.preventDefault();
         remove(null, findNearest(
           (event.clientX / canvas.width) * viewport.x + center.x - viewport.x / 2,
           (event.clientY / canvas.height) * viewport.y + center.y - viewport.y / 2
         ));
-        ui.bodyCount.innerText = activeBodies = bodies.length;
+        ui.bodyCount.innerHTML = activeBodies = bodies.length;
       } else {
         canvas.addEventListener("mousemove", handleMouseMove);
       }
@@ -396,7 +396,7 @@ function updateSettings() {
             break;
           case "KeyU":
           case "KeyV":
-            ui.collapse.innerText = ui.collapse.innerText === ">" ? "<" : ">";
+            ui.collapse.innerHTML = ui.collapse.innerHTML === ">" ? "<" : ">";
             if (ui.panel.classList.contains("hidden")) {
               ui.panel.classList.remove("hidden");
             } else {
@@ -432,11 +432,11 @@ function updateSettings() {
             break;
           case "Period":
             timestep = ~~((timestep + 0.05) * 100) / 100;
-            ui.timestep.value = ui.tOut.innerText = timestep;
+            ui.timestep.value = ui.tOut.innerHTML = timestep;
             break;
           case "Comma":
             timestep = timestep <= 0.05 ? 0 : ~~((timestep - 0.05) * 100) / 100;
-            ui.timestep.value = ui.tOut.innerText = timestep;
+            ui.timestep.value = ui.tOut.innerHTML = timestep;
             break;
         }
       }
